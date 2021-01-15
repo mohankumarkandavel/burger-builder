@@ -3,6 +3,7 @@ import Burger from '../../components/Burger/Burger';
 import Aux from '../../hoc/Auxiliary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
+
 const INGREDIENT_PRICES = {
     salad: 0.5,
     cheese: 0.4,
@@ -18,6 +19,7 @@ class BurgerBuilder extends Component {
             cheese: 0
         },
         totaPrice: 4,
+        purchaseable:false
     }
     
     addIngredientHandler = (type) => {
@@ -31,6 +33,7 @@ class BurgerBuilder extends Component {
         const oldPrice = this.state.totaPrice;
         const newPrice = oldPrice + priceAddition;
         this.setState({totaPrice: newPrice,  ingredients: updateIngredients});
+        this.updatePurchaseState(updateIngredients);
     };
 
     removeIngredientHandler = (type) => {
@@ -47,6 +50,19 @@ class BurgerBuilder extends Component {
         const oldPrice = this.state.totaPrice;
         const newPrice = oldPrice - priceDeduction;
         this.setState({totaPrice: newPrice,  ingredients: updateIngredients});
+        this.updatePurchaseState(updateIngredients);
+    };
+
+    updatePurchaseState(ingredients) {
+        const sum = Object.keys(ingredients)
+            .map( igkey => {
+                return ingredients[igkey];
+            })
+            .reduce((sum,el) => {
+                return sum + el;
+            }, 0);
+
+        this.setState({purchaseable: sum > 0})  
     };
 
     render() {
@@ -63,7 +79,9 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disableInfo}
-                    price={this.state.totaPrice}/>
+                    price={this.state.totaPrice}
+                    purchaseable={this.state.purchaseable}/>
+                    
             </Aux>
         );
     }
