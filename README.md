@@ -8,7 +8,7 @@ This is a simple react demo project using all I learned
 
 ### What I used?
 
-- React 16 / Jsx pages
+- React 17 / Jsx pages
 - React Router
 - React-Thunk
 - Redux
